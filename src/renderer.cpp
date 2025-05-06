@@ -62,8 +62,8 @@ void Renderer::Render(Snake::Snake snake, SDL_Point const &food) {
   }
 
   // Render snake's head
-  block.x = static_cast<int>(snake.head_x) * block.w;
-  block.y = static_cast<int>(snake.head_y) * block.h;
+  block.x = snake.GetHeadX() * block.w;
+  block.y = snake.GetHeadY() * block.h;
   if (snake.IsAlive()) {
     SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
   } else {

@@ -40,6 +40,8 @@ public:
     [[nodiscard]] bool IsAlive() const { return alive; }
     [[nodiscard]] bool IsDead() const { return !IsAlive(); }
     [[nodiscard]] int GetSize() const { return size; }
+    [[nodiscard]] int GetHeadX() const { return static_cast<int>(head_x); }
+    [[nodiscard]] int GetHeadY() const { return static_cast<int>(head_y); }
 
     bool ChangeDirection(const Direction newDir) {
         if (size == 1) {
@@ -55,21 +57,22 @@ public:
         return true;
     }
 
-    float head_x;
-    float head_y;
     std::vector<SDL_Point> body;
 
 private:
     void UpdateHead();
     void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
-    bool growing{false};
     int grid_width;
     int grid_height;
 
+    float head_x{};
+    float head_y{};
     float speed{0.1f};
     int size{1};
     bool alive{true};
+    bool growing{false};
+
     Direction direction = Direction::kUp;
 };
 

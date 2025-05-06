@@ -4,19 +4,13 @@
 
 namespace Snake {
 void Snake::Update() {
-  SDL_Point prev_cell{
-    static_cast<int>(head_x),
-    static_cast<int>(
-        head_y)};  // We first capture the head's cell before updating.
+  SDL_Point prevCell{GetHeadX(), GetHeadY()};  // We first capture the head's cell before updating.
   UpdateHead();
-  SDL_Point current_cell{
-    static_cast<int>(head_x),
-    static_cast<int>(head_y)};  // Capture the head's cell after updating.
+  SDL_Point currCell{GetHeadX(), GetHeadY()};  // Capture the head's cell after updating.
 
-  // Update all of the body vector items if the snake head has moved to a new
-  // cell.
-  if (current_cell.x != prev_cell.x || current_cell.y != prev_cell.y) {
-    UpdateBody(current_cell, prev_cell);
+  // Update all of the body vector items if the snake head has moved to a new cell.
+  if (currCell.x != prevCell.x || currCell.y != prevCell.y) {
+    UpdateBody(currCell, prevCell);
   }
 }
 
@@ -68,15 +62,10 @@ void Snake::GrowBody() { growing = true; }
 
 // Inefficient method to check if cell is occupied by snake.
 bool Snake::SnakeCell(int x, int y) {
-  if (x == static_cast<int>(head_x) && y == static_cast<int>(head_y)) {
-    return true;
-  }
-  for (auto const &item : body) {
-    if (x == item.x && y == item.y) {
-      return true;
-    }
-  }
-  return false;
+  if (x == GetHeadX() && y == GetHeadY()) return true;
+  return std::any_of(body.begin(), body.end(), [x, y](auto const &item) {
+    return x == item.x && y == item.y;
+  });
 }
 
 }
