@@ -20,11 +20,11 @@ int main() {
 
     const Renderer renderer(worldSize.Cast<int>());
 
-    const Controller controller;
+    LizardBrain brain;
 
     Game game(kGridWidth, kGridHeight);
 
-    game.Run(controller, renderer, kMsPerFrame);
+    game.Run(brain, renderer, kMsPerFrame);
 
     std::cout << "Game has terminated successfully!\n";
     std::cout << "Score: " << game.GetScore() << "\n";

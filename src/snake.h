@@ -42,6 +42,7 @@ public:
     [[nodiscard]] int GetSize() const { return size; }
     [[nodiscard]] int GetHeadX() const { return static_cast<int>(head_x); }
     [[nodiscard]] int GetHeadY() const { return static_cast<int>(head_y); }
+    [[nodiscard]] Direction GetDirection() const { return direction; }
 
     bool ChangeDirection(const Direction newDir) {
         if (size == 1) {

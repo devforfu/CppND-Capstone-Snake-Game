@@ -3,13 +3,15 @@
 
 Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
     engine(dev()),
-    random_w(0, static_cast<int>(gridWidth - 1)),
-    random_h(0, static_cast<int>(gridHeight - 1)),
+    width(static_cast<int>(gridWidth)),
+    height(static_cast<int>(gridHeight)),
+    random_w(0, width - 1),
+    random_h(0, height - 1),
     snake(static_cast<int>(gridWidth), static_cast<int>(gridHeight)) {
     PlaceFood();
 }
 
-void Game::Run(Controller const &controller, const Renderer &renderer, const std::size_t target_frame_duration) {
+void Game::Run(ControllerInterface &controller, const Renderer &renderer, const std::size_t target_frame_duration) {
     Uint32 title_timestamp = SDL_GetTicks();
     int frame_count = 0;
     bool running = true;
@@ -18,7 +20,7 @@ void Game::Run(Controller const &controller, const Renderer &renderer, const std
         const Uint32 frame_start = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        controller.HandleInput(running, snake);
+        controller.HandleInput(running, snake, *this);
         Update();
         renderer.Render(snake, food);
 
