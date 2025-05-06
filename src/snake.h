@@ -36,9 +36,10 @@ public:
 
     void SpeedUp() { speed += 0.02; }
     void SpeedUp(const float value) { speed += value; }
-    bool IsAlive() const { return alive; }
-    bool IsDead() const { return !IsAlive(); }
-    int GetSize() const { return size; }
+
+    [[nodiscard]] bool IsAlive() const { return alive; }
+    [[nodiscard]] bool IsDead() const { return !IsAlive(); }
+    [[nodiscard]] int GetSize() const { return size; }
 
     bool ChangeDirection(const Direction newDir) {
         if (size == 1) {
