@@ -61,7 +61,7 @@ public:
 
 private:
     void UpdateHead();
-    void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
+    void UpdateBody(const SDL_Point &current_cell, const SDL_Point &prev_cell);
 
     int grid_width;
     int grid_height;
