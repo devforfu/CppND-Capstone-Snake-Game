@@ -8,26 +8,26 @@
 #include "snake.h"
 
 class Game {
- public:
-  Game(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer &renderer,
-           std::size_t target_frame_duration);
-  int GetScore() const;
-  int GetSize() const;
+public:
+    Game(std::size_t gridWidth, std::size_t gridHeight);
 
- private:
-  Snake snake;
-  SDL_Point food;
+    void Run(Controller const &controller, const Renderer &renderer, std::size_t target_frame_duration);
 
-  std::random_device dev;
-  std::mt19937 engine;
-  std::uniform_int_distribution<int> random_w;
-  std::uniform_int_distribution<int> random_h;
+    [[nodiscard]] int GetScore() const;
+    [[nodiscard]] int GetSize() const;
 
-  int score{0};
+private:
+    std::random_device dev;
+    std::mt19937 engine;
+    std::uniform_int_distribution<> random_w;
+    std::uniform_int_distribution<> random_h;
 
-  void PlaceFood();
-  void Update();
+    int score{0};
+    Snake::Snake snake;
+    SDL_Point food{};
+
+    void PlaceFood();
+    void Update();
 };
 
 #endif
