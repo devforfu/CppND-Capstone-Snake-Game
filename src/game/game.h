@@ -12,6 +12,7 @@ public:
     Game(std::size_t gridWidth, std::size_t gridHeight);
 
     void Run(ControllerInterface &controller, const Renderer &renderer, std::size_t target_frame_duration);
+    void Stop();
 
     [[nodiscard]] int GetScore() const;
     [[nodiscard]] int GetSize() const;
@@ -19,11 +20,17 @@ public:
     [[nodiscard]] int GetFoodY() const { return food.y; }
     [[nodiscard]] int GetWorldLimitX() const { return width - 1; }
     [[nodiscard]] int GetWorldLimitY() const { return height - 1; }
+    [[nodiscard]] bool IsRunning() const { return running; }
+
+    enum class Action {
+        Exit,
+    };
 
 private:
     int width{};
     int height{};
     int score{0};
+    bool running{false};
 
     Snake::Snake snake;
     SDL_Point food{};

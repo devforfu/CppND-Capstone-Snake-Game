@@ -20,7 +20,8 @@ int main() {
 
     const Renderer renderer(worldSize.Cast<int>());
 
-    LizardBrain brain;
+    // LizardBrain brain;
+    FoodAverse brain;
 
     Game game(kGridWidth, kGridHeight);
 

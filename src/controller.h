@@ -1,56 +1,79 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include "actions/action.h"
 #include "snake.h"
 #include <map>
 
-// #define INTERFACE(CLASS_NAME) ({ \
-//     CLASS_NAME() = delete; \
-//     CLASS_NAME(CLASS_NAME &copy) = delete; \
-//     CLASS_NAME(CLASS_NAME &&moved) = delete; \
-//     CLASS_NAME &operator=(CLASS_NAME &other) = delete; \
-//     CLASS_NAME &operator=(CLASS_NAME &&moved) = delete; \
-// })
-
 class Game;
 
-using KeyBindings = std::map<SDL_KeyCode, Snake::Action&>;
+using KeyBindings = std::map<SDL_KeyCode, Actions::Action&>;
 
 class ControllerInterface {
 public:
     ControllerInterface() = default;
-    virtual ~ControllerInterface() = default;
-    virtual void HandleInput(bool &running, Snake::Snake &snake, const Game &game) = 0;
+    virtual ~ControllerInterface() = 0;
+    virtual void HandleInput(Snake::Snake &snake, Game &game) = 0;
 };
 
-class UserInput final : public ControllerInterface {
+class BaseInput : public ControllerInterface {
+public:
+    BaseInput(): ControllerInterface() {}
+
+    virtual void AddBindings() {
+        bindings.insert({SDLK_SPACE, speedUp});
+        bindings.insert({SDLK_q, quitGame});
+    }
+
+    void HandleInput(Snake::Snake &snake, Game &game) override;
+
+protected:
+    KeyBindings bindings{};
+
+    // Default actions
+    Actions::SpeedUp speedUp{0.01};
+    Actions::QuitGame quitGame;
+};
+
+
+class UserInput final : public BaseInput {
 
 public:
-    UserInput(): ControllerInterface() {
+    UserInput() {
+        BaseInput::AddBindings();
+        AddBindings();
+    }
+
+    void AddBindings() override {
         bindings.insert({SDLK_UP, up});
         bindings.insert({SDLK_DOWN, down});
         bindings.insert({SDLK_LEFT, left});
         bindings.insert({SDLK_RIGHT, right});
-        bindings.insert({SDLK_SPACE, speedUp});
     }
 
-    void HandleInput(bool &running, Snake::Snake &snake, const Game &game) override;
-
 private:
-    KeyBindings bindings{};
-
-    Snake::ChangeDir up{Snake::Direction::kUp};
-    Snake::ChangeDir down{Snake::Direction::kDown};
-    Snake::ChangeDir left{Snake::Direction::kLeft};
-    Snake::ChangeDir right{Snake::Direction::kRight};
-    Snake::SpeedUp speedUp{0.01};
-
+    Actions::ChangeDir up{Snake::Direction::kUp};
+    Actions::ChangeDir down{Snake::Direction::kDown};
+    Actions::ChangeDir left{Snake::Direction::kLeft};
+    Actions::ChangeDir right{Snake::Direction::kRight};
 };
 
-class LizardBrain final : public ControllerInterface {
+class LizardBrain final : public BaseInput {
 public:
-    LizardBrain(): ControllerInterface() {}
-    void HandleInput(bool &running, Snake::Snake &snake, const Game &game) override;
+    LizardBrain() {
+        BaseInput::AddBindings();
+    }
+
+    void HandleInput(Snake::Snake &snake, Game &game) override;
+};
+
+class FoodAverse final : public BaseInput {
+public:
+    FoodAverse() {
+        BaseInput::AddBindings();
+    }
+
+    void HandleInput(Snake::Snake &snake, Game &game) override;
 };
 
 #endif
